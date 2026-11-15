@@ -36,8 +36,15 @@
     if(!AudioContextClass||context)return;
     context=new AudioContextClass();
     effectBus=context.createGain();
-    effectBus.gain.value=.65;
-    effectBus.connect(context.destination);
+    effectBus.gain.value=2.4;
+    const limiter=context.createDynamicsCompressor();
+    limiter.threshold.value=-18;
+    limiter.knee.value=12;
+    limiter.ratio.value=8;
+    limiter.attack.value=.003;
+    limiter.release.value=.18;
+    effectBus.connect(limiter);
+    limiter.connect(context.destination);
     noiseBuffer=context.createBuffer(1,Math.ceil(context.sampleRate*.24),context.sampleRate);
     const samples=noiseBuffer.getChannelData(0);
     for(let i=0;i<samples.length;i++)samples[i]=(Math.random()*2-1)*(1-i/samples.length);
@@ -70,7 +77,7 @@
     music=new Audio(url(file));
     music.loop=true;
     music.preload='none';
-    music.volume=.55;
+    music.volume=.42;
     if(next==='wildBattle'||next==='gymBattle'||next==='giovanniBattle')clearJingle();
     resumeMusic();
   }
@@ -87,7 +94,7 @@
     music?.pause();
     const clip=new Audio(url(jingles[kind]));
     clip.preload='auto';
-    clip.volume=.78;
+    clip.volume=.95;
     jingle=clip;
     clip.onended=finishJingle;
     clip.play().catch(finishJingle);
