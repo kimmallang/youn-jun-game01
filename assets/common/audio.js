@@ -22,7 +22,8 @@
     caught:'1-15. Caught a Pokémon!.mp3',
     heal:'1-30. Recovery.mp3',
     badge:'1-19. Obtained a Key Item!.mp3',
-    victory:'2-05. Victory! (Team Skull).mp3'
+    victory:'2-05. Victory! (Team Skull).mp3',
+    evolution:'1-52. Evolution.mp3'
   };
   const AudioContextClass=window.AudioContext||window.webkitAudioContext;
   const storageKey='younjun.pokemon.audio.v1';
@@ -99,6 +100,7 @@
     clip.onended=finishJingle;
     clip.play().catch(finishJingle);
     if(kind==='victory')jingleTimer=setTimeout(finishJingle,5200);
+    if(kind==='evolution')jingleTimer=setTimeout(finishJingle,3600);
   }
   function tone(frequency,when,duration,wave,volume,endFrequency){
     const oscillator=context.createOscillator(),envelope=context.createGain();
